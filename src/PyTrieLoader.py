@@ -10,7 +10,7 @@ This is a utility class to take large csv word dictionaries and
 class PyTrieLoader:
     
     def __init__(self):
-      pass
+      self.trie_data = None
     
     #reads in a csv file and returns a list of words.  
     def loadCSV(self,csvFile):
@@ -26,13 +26,14 @@ class PyTrieLoader:
     def generateTrie(self,csv):
       dictionary = trie.PyTrie()
       words = self.loadCSV(csv)
-      counter = 0
+      # have to start counter at 1 cause of None evaluating to <= 0
+      counter = 1
       
       for word in words:
-
+        
         dictionary.add(word,counter)
         counter += 1
-        
+       
       return dictionary
       
     
@@ -40,6 +41,7 @@ class PyTrieLoader:
       
 loader = PyTrieLoader()
 words = loader.generateTrie("MostFrequent1000.csv")
-print words.lookup("people")
+print words.lookup("the")
+print words.wordCount()
 
       

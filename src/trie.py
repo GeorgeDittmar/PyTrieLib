@@ -15,13 +15,13 @@ class PyTrie:
   def add(self,word,value):
     # strip off the first char in the word and add it to root.
     head,rest = word[0],word[1:]
+    print "head", head
     new_node = self.root[head]
     new_node.letter =  head
-    print new_node.letter
+    
     #if rest is used up should be None
     if not rest:
       new_node.value = value
-      self.numWords += 1
       return
     self.root[head].add(rest,value)
     
@@ -33,6 +33,7 @@ class PyTrie:
     
     head,rest = word[0],word[1:]
     curr = self.root[head]
+    print curr.letter, curr.value
     if rest:
       
       return curr.lookup(rest)
@@ -50,7 +51,15 @@ class PyTrie:
       return False
     node = self.root[head]  
     node.prefix(rest)
+  
+  # perform a breadth first search of the trie to determine the size of the vocabulary.
+  def wordCount(self):
     
-  def size(self)
-    pass
+    count = 1 if self.value else 0
+    
+    for key in self.root:
+     
+      count = count + self.root[key].wordCount()
+      #print "Key,", key
+    return count
 
