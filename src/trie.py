@@ -2,7 +2,7 @@
 #!/usr/bin/python
 from collections import defaultdict
 
-class PyTrie:
+class TrieNode:
   def __init__(self):
     self.root = defaultdict(PyTrie)
     self.letter = None
@@ -15,7 +15,7 @@ class PyTrie:
   def add(self,word,value):
     # strip off the first char in the word and add it to root.
     head,rest = word[0],word[1:]
-    print "head", head
+    
     new_node = self.root[head]
     new_node.letter =  head
     
@@ -52,14 +52,17 @@ class PyTrie:
     node = self.root[head]  
     node.prefix(rest)
   
-  # perform a breadth first search of the trie to determine the size of the vocabulary.
-  def wordCount(self):
-    
-    count = 1 if self.value else 0
+  # perform a depth-first search 
+  def wordCount(self, level):
+    count = 0
     
     for key in self.root:
-     
-      count = count + self.root[key].wordCount()
-      #print "Key,", key
+
+      if self.root[key].value:
+        count += 1 + self.root[key].wordCount(level+1)
+      else:
+        count += 0 + self.root[key].wordCount(level+1)
+       
     return count
+    
 
