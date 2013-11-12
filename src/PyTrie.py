@@ -10,7 +10,8 @@ This is a utility class to take large csv word dictionaries and create a trie fr
 class PyTrie:
     
     def __init__(self):
-      self.trie_data = None
+      # init an empty trie with this object
+      self.trie_data = trie.TrieNode()
       self.num_words = 0
     
     #reads in a csv file and returns a list of words.  
@@ -25,27 +26,32 @@ class PyTrie:
     
     #given a csv file, load the csv and return a new trie populated with the words in the csv.  
     def generateTrie(self,csv):
-      dictionary = trie.PyTrie()
+      dictionary = trie.TrieNode()
+      
       words = self.loadCSV(csv)
-      print len(words)
+      print "Number of words loaded from csv: ", len(words)
       
       # have to start counter at 1 cause of None evaluating to <= 0
       counter = 1
       
       for word in words:
-        counter += 1
         dictionary.add(word,counter)
+        counter += 1
         
-      print "Num words", counter 
+        self.num_words += 1
+
       return dictionary
       
     def size(self):
       return self.num_words
     
       
-loader = PyTrieLoader()
+loader = PyTrie()
 words = loader.generateTrie("MostFrequent1000.csv")
 print words.lookup("is")
-print "Number of words in trie", words.wordCount(1)
+print "Number of words in trie", words.num_words()
+words.add("bobby",words.num_words()+1)
+print words.lookup("bobby")
+print words.num_words()
 
       

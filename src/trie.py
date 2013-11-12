@@ -4,7 +4,7 @@ from collections import defaultdict
 
 class TrieNode:
   def __init__(self):
-    self.root = defaultdict(PyTrie)
+    self.root = defaultdict(TrieNode)
     self.letter = None
     self.value = None
     self.numWords = 0
@@ -22,6 +22,8 @@ class TrieNode:
     #if rest is used up should be None
     if not rest:
       new_node.value = value
+      new_node.numWords += 1
+      
       return
     self.root[head].add(rest,value)
     
@@ -33,7 +35,7 @@ class TrieNode:
     
     head,rest = word[0],word[1:]
     curr = self.root[head]
-    print curr.letter, curr.value
+
     if rest:
       
       return curr.lookup(rest)
@@ -51,18 +53,10 @@ class TrieNode:
       return False
     node = self.root[head]  
     node.prefix(rest)
-  
-  # perform a depth-first search 
-  def wordCount(self, level):
-    count = 0
-    
-    for key in self.root:
 
-      if self.root[key].value:
-        count += 1 + self.root[key].wordCount(level+1)
-      else:
-        count += 0 + self.root[key].wordCount(level+1)
-       
+  def num_words(self):
+    count = self.numWords
+    for key in self.root:
+      count = count + self.root[key].num_words()
     return count
-    
 
