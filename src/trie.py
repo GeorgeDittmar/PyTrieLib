@@ -26,9 +26,20 @@ class TrieNode:
       
       return
     self.root[head].add(rest,value)
-    
+  
+  # remove a word from the trie by just setting the nodes value to NONE.  
   def remove(self,word):
-    pass
+    head,rest = word[0],word[1:]
+    curr = self.root[head]
+    
+    if rest:
+      return curr.remove(rest)
+    
+    if curr.value:
+      curr.value = None
+      curr.numWords -= 1
+      return True
+    return False
      
   def lookup(self,word):
     # look up first char in dict

@@ -53,5 +53,8 @@ print "Number of words in trie", words.num_words()
 words.add("bobby",words.num_words()+1)
 print words.lookup("bobby")
 print words.num_words()
+print words.remove("bobby")
+print words.num_words()
+print words.lookup("bobby")
 
       
