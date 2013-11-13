@@ -3,7 +3,8 @@
 
 import csv
 import trie
-
+import json
+import cPickle as pickle
 """
 This is a utility class to take large csv word dictionaries and create a trie from it. 
 """
@@ -26,7 +27,7 @@ class PyTrie:
     
     #given a csv file, load the csv and return a new trie populated with the words in the csv.  
     def generateTrie(self,csv):
-      dictionary = trie.TrieNode()
+      self.trie_data = trie.TrieNode()
       
       words = self.loadCSV(csv)
       print "Number of words loaded from csv: ", len(words)
@@ -35,17 +36,22 @@ class PyTrie:
       counter = 1
       
       for word in words:
-        dictionary.add(word,counter)
+        self.trie_data.add(word,counter)
         counter += 1
-        
         self.num_words += 1
-
-      return dictionary
       
-    def size(self):
-      return self.num_words
+      return self.trie_data
+      
+    def serialize_dictionary(self,dictionary_name):
+      pickle.dump(self.trie_data,open(dictionary_name,"wb"))
+      
+    def deserialize_dictionary(self,file_path):
+      self.trie_data = pickle.load(open(file_path,"rb"))
     
-      
+"""
+Some tests of the PyTrie Object. This will be removed from this script and moved into their own unit tests.
+"""
+
 loader = PyTrie()
 words = loader.generateTrie("MostFrequent1000.csv")
 print words.lookup("is")
@@ -55,6 +61,6 @@ print words.lookup("bobby")
 print words.num_words()
 print words.remove("bobby")
 print words.num_words()
-print words.lookup("bobby")
-
+print "trying to find bobby...", words.lookup("bobby")
+print "Pickling data..." , loader.serialize_dictionary("1000CommonWords.p")
       
